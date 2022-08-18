@@ -5,6 +5,8 @@ airflow/dags/constants.py
 airflow/dags/__pycache__
 airflow/dags/tests/__pycache__
 airflow/dags/test.py
+airflow/dags/*.txt
+airflow/dags/*.json
 
 airflow/dags/old/
 airflow/logs/
