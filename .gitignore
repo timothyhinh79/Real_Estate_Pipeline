@@ -4,6 +4,7 @@ console.py
 airflow/dags/constants.py
 airflow/dags/__pycache__
 airflow/dags/tests/__pycache__
+airflow/dags/test.py
 
 airflow/dags/old/
 airflow/logs/
