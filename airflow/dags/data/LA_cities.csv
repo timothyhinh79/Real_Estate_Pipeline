@@ -1,0 +1,89 @@
+index,City,State,Date incorporated,Population as of(2020 Census),Include
+0,Agoura Hills,CA,8-Dec-82,20299,N
+1,Alhambra,CA,11-Jul-03,82868,Y
+2,Arcadia,CA,5-Aug-03,56681,Y
+3,Artesia,CA,29-May-59,16395,N
+4,Avalon,CA,26-Jun-13,3460,N
+5,Azusa,CA,"December 29, 1898",50000,N
+6,Baldwin Park,CA,25-Jan-56,72176,Y
+7,Bell,CA,7-Nov-27,33559,N
+8,Bell Gardens,CA,1-Aug-61,39501,N
+9,Bellflower,CA,3-Sep-57,79190,N
+10,Beverly Hills,CA,22-Oct-06,32701,N
+11,Bradbury,CA,26-Jul-57,921,N
+12,Burbank,CA,8-Jul-11,107337,N
+13,Calabasas,CA,5-Apr-91,23241,N
+14,Carson,CA,20-Feb-68,95558,N
+15,Cerritos,CA,24-Apr-56,49578,N
+16,Claremont,CA,3-Oct-07,37266,N
+17,Commerce,CA,28-Jan-60,12378,N
+18,Compton,CA,"May 11, 1888",95740,N
+19,Covina,CA,14-Aug-01,51268,Y
+20,Cudahy,CA,10-Nov-60,22811,N
+21,Culver City,CA,20-Sep-17,40779,N
+22,Diamond Bar,CA,18-Apr-89,55072,Y
+23,Downey,CA,17-Dec-56,114355,N
+24,Duarte,CA,22-Aug-57,21727,Y
+25,El Monte,CA,18-Nov-12,109450,Y
+26,El Segundo,CA,18-Jan-17,17272,N
+27,Gardena,CA,11-Sep-30,61027,N
+28,Glendale,CA,15-Feb-06,196543,N
+29,Glendora,CA,13-Nov-11,52558,N
+30,Hawaiian Gardens,CA,14-Apr-64,14149,N
+31,Hawthorne,CA,12-Jul-22,88083,N
+32,Hermosa Beach,CA,10-Jan-07,19728,N
+33,Hidden Hills,CA,19-Oct-61,1725,N
+34,Huntington Park,CA,1-Sep-06,54883,N
+35,Industry,CA,18-Jun-57,264,N
+36,Inglewood,CA,14-Feb-08,107762,N
+37,Irwindale,CA,6-Aug-57,1472,N
+38,La Cañada Flintridge,CA,8-Dec-76,20573,N
+39,La Habra Heights,CA,4-Dec-78,5682,N
+40,La Mirada,CA,23-Mar-60,48008,N
+41,La Puente,CA,1-Aug-56,38062,N
+42,La Verne,CA,11-Sep-06,31334,N
+43,Lakewood,CA,16-Apr-54,82496,N
+44,Lancaster,CA,22-Nov-77,173516,N
+45,Lawndale,CA,28-Dec-59,31807,N
+46,Lomita,CA,30-Jun-64,20921,N
+47,Long Beach,CA,"December 13, 1897",466742,N
+48,Los Angeles,CA,"April 4, 1850",3898747,N
+49,Lynwood,CA,16-Jul-21,67265,N
+50,Malibu,CA,28-Mar-91,10654,N
+51,Manhattan Beach,CA,7-Dec-12,35506,N
+52,Maywood,CA,2-Sep-24,25138,N
+53,Monrovia,CA,"December 15, 1887",37931,Y
+54,Montebello,CA,15-Oct-20,62640,N
+55,Monterey Park,CA,29-May-16,61096,Y
+56,Norwalk,CA,26-Aug-57,102773,N
+57,Palmdale,CA,24-Aug-62,169450,N
+58,Palos Verdes Estates,CA,20-Dec-39,13347,N
+59,Paramount,CA,30-Jan-57,53733,N
+60,Pasadena,CA,"June 19, 1886",138699,Y
+61,Pico Rivera,CA,29-Jan-58,62088,N
+62,Pomona,CA,"January 6, 1888",151713,N
+63,Rancho Palos Verdes,CA,7-Sep-73,42287,N
+64,Redondo Beach,CA,"April 29, 1892",71576,N
+65,Rolling Hills,CA,18-Sep-57,1739,N
+66,Rolling Hills Estates,CA,24-Jan-57,8280,N
+67,Rosemead,CA,4-Aug-59,51185,Y
+68,San Dimas,CA,4-Aug-60,34924,N
+69,San Fernando,CA,31-Aug-11,23946,N
+70,San Gabriel,CA,24-Apr-13,39568,Y
+71,San Marino,CA,25-Apr-13,12513,N
+72,Santa Clarita,CA,15-Dec-87,228673,N
+73,Santa Fe Springs,CA,15-May-57,19219,N
+74,Santa Monica,CA,"December 9, 1886",93076,N
+75,Sierra Madre,CA,7-Feb-07,11268,N
+76,Signal Hill,CA,22-Apr-24,11848,N
+77,South El Monte,CA,30-Jul-58,19567,Y
+78,South Gate,CA,15-Jan-23,92726,N
+79,South Pasadena,CA,"February 29, 1888",26943,Y
+80,Temple City,CA,25-May-60,36494,Y
+81,Torrance,CA,12-May-21,147067,N
+82,Vernon,CA,22-Sep-05,222,N
+83,Walnut,CA,19-Jan-59,28430,N
+84,West Covina,CA,17-Feb-23,109501,Y
+85,West Hollywood,CA,29-Nov-84,35757,N
+86,Westlake Village,CA,11-Dec-81,8029,N
+87,Whittier,CA,"February 28, 1898",87306,N
