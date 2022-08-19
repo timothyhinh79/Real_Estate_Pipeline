@@ -1,15 +1,12 @@
 import csv
-from weather_api import *
 import os
-
 from datetime import datetime
-
 from airflow import DAG
-
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-from ingest_house_listings_data_script import *
+from code.weather_api import *
+from code.ingest_house_listings_data_script import *
 
 # PG_HOST = os.getenv('POSTGRES_USER')
 # PG_USER = os.getenv('POSTGRES_USER')
