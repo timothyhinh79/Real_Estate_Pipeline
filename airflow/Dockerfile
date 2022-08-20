@@ -5,7 +5,7 @@ ENV AIRFLOW_HOME=/opt/airflow
 USER root
 RUN apt-get update -qq && apt-get install nano -qqq
 
-RUN pip install --no-cache-dir psycopg2 requests datetime
+RUN pip install --no-cache-dir psycopg2 requests datetime pandas
 
 SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-x", "-c"]
 

@@ -1,15 +1,12 @@
 import sys
 sys.path.append('/opt/airflow/dags/code/')
 
-import csv
-import os
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-from weather_api import *
-from ingest_weather_data_script import ingest_weekly_weather_data
+from ingest_lasd_crimes_data_script import ingest_crimes_data_to_postgres
 
 # PG_HOST = os.getenv('POSTGRES_USER')
 # PG_USER = os.getenv('POSTGRES_USER')
@@ -23,38 +20,35 @@ PG_PASSWORD = 'root'
 PG_PORT = '5432'
 PG_DATABASE = 'weather'
 
-
-with open('/opt/airflow/dags/data/ca-zip-code-list.csv') as csvfile:
-    rows = csv.reader(csvfile)
-    next(rows)
-    res = zip(*rows)
-
-ca_zips = list(res)[0][:100] # list of California zip codes
+lasd_url = 'http://shq.lasdnews.net/CrimeStats/CAASS/PART_I_AND_II_CRIMES.csv'
+output_file = '/opt/airflow/dags/data/lasd_crimes_data.csv'
 
 local_workflow = DAG(
-    "WeatherIngestionDAG",
-    schedule_interval="0 15 * * 1",
+    "CrimesIngestionDAG",
     max_active_runs = 1,
-    start_date=datetime(2022, 7, 25)
+    schedule_interval="@once",
+    start_date = datetime(2022,8,19)
 )
 
 
 with local_workflow:
 
-    ingest_task = PythonOperator(
-        task_id = 'ingest_data',
-        python_callable = ingest_weekly_weather_data,
-        provide_context = True,
-        # database, user, password, host, port,
+    curl_task = BashOperator(
+        task_id='curl',
+        bash_command=f'curl -sSL {lasd_url} > {output_file}'
+    )
+
+    ingest_to_postgres_task = PythonOperator(
+        task_id='ingest_to_postgres',
+        python_callable = ingest_crimes_data_to_postgres,
         op_kwargs = {
+            'input': output_file,
             'database': PG_DATABASE,
             'user': PG_USER,
             'password': PG_PASSWORD,
             'host': PG_HOST,
-            'port': PG_PORT,
-            'locations': ca_zips,
+            'port': PG_PORT
         }
     )
 
-    ingest_task
-
+    curl_task >> ingest_to_postgres_task
