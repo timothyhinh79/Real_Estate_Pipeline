@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/opt/airflow/dags/code/')
+
 import csv
 import os
 from datetime import datetime
@@ -5,8 +8,8 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-from code.weather_api import *
-from code.ingest_weather_data_script import ingest_monthly_weather_data_batch
+from weather_api import *
+from ingest_weather_data_script import ingest_monthly_weather_data_batch
 
 # PG_HOST = os.getenv('POSTGRES_USER')
 # PG_USER = os.getenv('POSTGRES_USER')

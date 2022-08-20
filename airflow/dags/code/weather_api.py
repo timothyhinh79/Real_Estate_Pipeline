@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/opt/airflow/dags/code/')
 
 from constants import token
 import requests
