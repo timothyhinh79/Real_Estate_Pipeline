@@ -44,6 +44,7 @@ def ingest_listings_data(execution_date, database, user, password, host, port, l
     create_table_sql = """
         CREATE TABLE IF NOT EXISTS house_listings (
             id SERIAL PRIMARY KEY,
+            extract_date DATE NOT NULL,
             zpid INTEGER,
             street_address VARCHAR(255),
             zipcode VARCHAR(20),
@@ -84,6 +85,7 @@ def ingest_listings_data(execution_date, database, user, password, host, port, l
     insert_sql = """
         INSERT INTO house_listings (
             zpid,
+            extract_date,
             street_address,
             zipcode,
             city,
@@ -119,6 +121,7 @@ def ingest_listings_data(execution_date, database, user, password, host, port, l
         )
         SELECT
             zpid,
+            extract_date,
             street_address,
             zipcode,
             city,

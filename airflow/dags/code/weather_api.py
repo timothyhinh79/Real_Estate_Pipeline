@@ -1,19 +1,19 @@
 import sys
 sys.path.append('/opt/airflow/dags/code/')
 
-from constants import token
+from constants import weather_api_token
 import requests
 from datetime import timedelta, date
 
 def request_current(city):
     city_clean = city.replace(' ', '%20')
-    search_url = f'https://api.weatherapi.com/v1/current.json?key={token}%20&q={city_clean}'
+    search_url = f'https://api.weatherapi.com/v1/current.json?key={weather_api_token}%20&q={city_clean}'
     response = requests.get(search_url)
     return response.json()
 
 def request_historical(city, date):
     city_clean = city.replace(' ', '%20')
-    search_url = f'https://api.weatherapi.com/v1/history.json?key={token}%20&q={city_clean}&dt={date}'
+    search_url = f'https://api.weatherapi.com/v1/history.json?key={weather_api_token}%20&q={city_clean}&dt={date}'
     response = requests.get(search_url)
     if response.status_code == 200:
         return response.json()
@@ -23,7 +23,7 @@ def request_historical(city, date):
 # request daily forecast data over date range (smaller than 30 days) - only available while PRO plan trial is active
 def request_historical_batch(city, start_date, end_date):
     city_clean = city.replace(' ', '%20')
-    search_url = f'https://api.weatherapi.com/v1/history.json?key={token}%20&q={city_clean}&dt={start_date}&end_dt={end_date}'
+    search_url = f'https://api.weatherapi.com/v1/history.json?key={weather_api_token}%20&q={city_clean}&dt={start_date}&end_dt={end_date}'
     response = requests.get(search_url)
     if response.status_code == 200:
         return response.json()

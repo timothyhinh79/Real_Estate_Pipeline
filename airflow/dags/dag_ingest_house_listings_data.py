@@ -3,7 +3,7 @@ sys.path.append('/opt/airflow/dags/code/')
 
 import csv
 import os
-from datetime import datetime
+from datetime import datetime, date
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
@@ -32,7 +32,7 @@ with open('/opt/airflow/dags/data/LA_cities.csv') as csvfile:
     res = list(zip(*rows))
 
 # each location consists of city, state, and zip (zip is optional)
-locations = [{'city': city, 'state': state, 'zip': ''} for city, state, include in zip(res[1], res[2], res[5]) if include == 'Y']
+locations = [{'city': city, 'state': state, 'zip': ''} for city, state, include in zip(res[1], res[2], res[5]) if include == 'Y'][:1]
 
 local_workflow = DAG(
     "HouseListingsIngestionDAG",
