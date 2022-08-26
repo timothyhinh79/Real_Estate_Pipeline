@@ -6,15 +6,15 @@ import requests
 from datetime import timedelta, date
 import time
 
-def request_current(city):
-    city_clean = city.replace(' ', '%20')
-    search_url = f'https://api.weatherapi.com/v1/current.json?key={weather_api_token}%20&q={city_clean}'
+def request_current(place):
+    place_clean = place.replace(' ', '%20')
+    search_url = f'https://api.weatherapi.com/v1/current.json?key={weather_api_token}%20&q={place_clean}'
     response = requests.get(search_url)
     return response.json()
 
-def request_historical(city, date, retry_sleep_time = 60, max_attempts = 3):
-    city_clean = city.replace(' ', '%20')
-    search_url = f'https://api.weatherapi.com/v1/history.json?key={weather_api_token}%20&q={city_clean}&dt={date}'
+def request_historical(place, date, retry_sleep_time = 60, max_attempts = 3):
+    place_clean = place.replace(' ', '%20')
+    search_url = f'https://api.weatherapi.com/v1/history.json?key={weather_api_token}%20&q={place_clean}&dt={date}'
     for i in range(max_attempts):
         response = requests.get(search_url)
         if response.status_code == 200:
@@ -27,9 +27,9 @@ def request_historical(city, date, retry_sleep_time = 60, max_attempts = 3):
     return {} # return nothing if API call fails
 
 # request daily forecast data over date range (smaller than 30 days) - only available while PRO plan trial is active
-def request_historical_batch(city, start_date, end_date, retry_sleep_time = 60, max_attempts = 3):
-    city_clean = city.replace(' ', '%20')
-    search_url = f'https://api.weatherapi.com/v1/history.json?key={weather_api_token}%20&q={city_clean}&dt={start_date}&end_dt={end_date}'
+def request_historical_batch(place, start_date, end_date, retry_sleep_time = 60, max_attempts = 3):
+    place_clean = place.replace(' ', '%20')
+    search_url = f'https://api.weatherapi.com/v1/history.json?key={weather_api_token}%20&q={place_clean}&dt={start_date}&end_dt={end_date}'
     for i in range(max_attempts):
         response = requests.get(search_url)
         if response.status_code == 200:
@@ -51,7 +51,7 @@ def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
-def download_weather_data(location, location_field_name, start_date, end_date, retry_sleep_time, api_max_attempts):
+def download_weather_data(location, location_field_name, start_date, end_date, retry_sleep_time = 60, api_max_attempts = 3):
     data = []
     for day in daterange(start_date, end_date + timedelta(1)):
         json = request_historical(location, day.strftime('%Y-%m-%d'), retry_sleep_time, api_max_attempts)
@@ -62,7 +62,7 @@ def download_weather_data(location, location_field_name, start_date, end_date, r
     return data
 
 # downloading weather data in batches (only available while PRO plan trial is active) to minimize number of calls for ingesting old weather data
-def download_weather_data_batch(location, location_field_name, start_date, end_date, retry_sleep_time, api_max_attempts):
+def download_weather_data_batch(location, location_field_name, start_date, end_date, retry_sleep_time = 60, api_max_attempts = 3):
     data = []
     # for day in daterange(start_date, end_date + timedelta(1)):
     json = request_historical_batch(location, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'), retry_sleep_time, api_max_attempts)
