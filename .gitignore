@@ -1,6 +1,5 @@
 src
 console.py
-dfasdf.py
 
 airflow/dags/code/constants.py
 airflow/dags/__pycache__
