@@ -20,33 +20,6 @@ def ingest_weekly_weather_data(execution_date, database, user, password, host, p
     conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("""
-        DROP TABLE IF EXISTS daily_forecasts
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS daily_forecasts (
-            id SERIAL PRIMARY KEY,
-            zip_code VARCHAR(255),
-            date DATE,
-            maxtemp_c FLOAT,
-            maxtemp_f FLOAT,
-            mintemp_c FLOAT,
-            mintemp_f FLOAT,
-            avgtemp_c FLOAT,
-            avgtemp_f FLOAT,
-            maxwind_mph FLOAT,
-            maxwind_kph FLOAT,
-            totalprecip_mm FLOAT,
-            totalprecip_in FLOAT,
-            avgvis_km FLOAT,
-            avgvis_miles FLOAT,
-            avghumidity FLOAT,
-            uv FLOAT
-        )
-    """
-    cursor.execute(create_table_sql)
-
     insert_sql = """
         INSERT INTO daily_forecasts (
             zip_code,
@@ -115,35 +88,6 @@ def ingest_monthly_weather_data_batch(execution_date, database, user, password, 
     conn = psycopg2.connect(database=database,user = user, password = password, host = host, port = port)
     conn.autocommit = True
     cursor = conn.cursor()
-
-    # dropping table if ingesting data for earliest month
-    if begin_date == date_to_drop_table:
-        cursor.execute("""
-            DROP TABLE IF EXISTS daily_forecasts
-        """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS daily_forecasts (
-            id SERIAL PRIMARY KEY,
-            zip_code VARCHAR(255),
-            date DATE,
-            maxtemp_c FLOAT,
-            maxtemp_f FLOAT,
-            mintemp_c FLOAT,
-            mintemp_f FLOAT,
-            avgtemp_c FLOAT,
-            avgtemp_f FLOAT,
-            maxwind_mph FLOAT,
-            maxwind_kph FLOAT,
-            totalprecip_mm FLOAT,
-            totalprecip_in FLOAT,
-            avgvis_km FLOAT,
-            avgvis_miles FLOAT,
-            avghumidity FLOAT,
-            uv FLOAT
-        )
-    """
-    cursor.execute(create_table_sql)
 
     insert_sql = """
         INSERT INTO daily_forecasts (

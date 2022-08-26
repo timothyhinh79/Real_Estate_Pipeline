@@ -11,17 +11,11 @@ from airflow.operators.python import PythonOperator
 from weather_api import *
 from ingest_house_listings_data_script import *
 
-# PG_HOST = os.getenv('POSTGRES_USER')
-# PG_USER = os.getenv('POSTGRES_USER')
-# PG_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-# PG_PORT = os.getenv('PG_PORT')
-# PG_DATABASE = os.getenv('PG_DATABASE')
-
-PG_HOST = 'pgdatabase'
-PG_USER = 'root'
-PG_PASSWORD = 'root'
-PG_PORT = '5432'
-PG_DATABASE = 'weather'
+PG_HOST = os.getenv('POSTGRES_HOST')
+PG_USER = os.getenv('POSTGRES_USER')
+PG_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+PG_PORT = os.getenv('POSTGRES_PORT')
+PG_DATABASE = os.getenv('POSTGRES_DB')
 
 ingestion_start_date = date(2022,8,14)
 sleep_time_between_pages = 60
@@ -32,7 +26,7 @@ with open('/opt/airflow/dags/data/LA_cities.csv') as csvfile:
     res = list(zip(*rows))
 
 # each location consists of city, state, and zip (zip is optional)
-locations = [{'city': city, 'state': state, 'zip': ''} for city, state, include in zip(res[1], res[2], res[5]) if include == 'Y'][:1]
+locations = [{'city': city, 'state': state, 'zip': ''} for city, state, include in zip(res[1], res[2], res[5]) if include == 'Y']
 
 local_workflow = DAG(
     "HouseListingsIngestionDAG",

@@ -1,6 +1,7 @@
 import sys
 sys.path.append('/opt/airflow/dags/code/')
 
+import os
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
@@ -8,17 +9,11 @@ from airflow.operators.python import PythonOperator
 
 from ingest_lasd_crimes_data_script import ingest_crimes_data_to_postgres
 
-# PG_HOST = os.getenv('POSTGRES_USER')
-# PG_USER = os.getenv('POSTGRES_USER')
-# PG_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-# PG_PORT = os.getenv('PG_PORT')
-# PG_DATABASE = os.getenv('PG_DATABASE')
-
-PG_HOST = 'pgdatabase'
-PG_USER = 'root'
-PG_PASSWORD = 'root'
-PG_PORT = '5432'
-PG_DATABASE = 'weather'
+PG_HOST = os.getenv('POSTGRES_HOST')
+PG_USER = os.getenv('POSTGRES_USER')
+PG_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+PG_PORT = os.getenv('POSTGRES_PORT')
+PG_DATABASE = os.getenv('POSTGRES_DB')
 
 lasd_url = 'http://shq.lasdnews.net/CrimeStats/CAASS/PART_I_AND_II_CRIMES.csv'
 output_file = '/opt/airflow/dags/data/lasd_crimes_data.csv'

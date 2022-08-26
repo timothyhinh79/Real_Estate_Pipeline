@@ -45,6 +45,15 @@ def get_population_by_zip(year, census_dataset, table, table_measure, zips):
 
 
 def ingest_us_census_callable(year, census_dataset, zips, database, user, password, host, port):
+
+    print('year:', year)
+    print('census_dataset:', census_dataset)
+    print('database:', database)
+    print('user:', user)
+    print('password:', password)
+    print('host:', host)
+    print('port:', port)
+
     population_by_race_and_zip = get_population_breakout_by_zip(year, census_dataset, 'sex_by_age','population','race',zips)
     population_by_agesex_and_zip = get_population_breakout_by_zip(year, census_dataset, 'sex_by_age','population','agesex_group',zips)
     population_by_incomelevel_and_zip = get_population_breakout_by_zip(year, census_dataset, 'household_income_last_12_months','num_households','income_group',zips)
@@ -54,25 +63,6 @@ def ingest_us_census_callable(year, census_dataset, zips, database, user, passwo
     conn = psycopg2.connect(database = database, user = user, password = password, host = host, port = port)
     conn.autocommit = True
     cursor = conn.cursor()
-
-    # set up SQL insertions here for each of the 5 tables...
-    # dropping table if ingesting data for earliest month
-    # if begin_date == date_to_drop_table:
-    cursor.execute("""
-        DROP TABLE IF EXISTS population_by_race_and_zip
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS population_by_race_and_zip (
-            id SERIAL PRIMARY KEY,
-            year INTEGER,
-            dataset VARCHAR(50),
-            zip VARCHAR(20),
-            race varchar(255),
-            population INTEGER
-        )
-    """
-    cursor.execute(create_table_sql)
 
     insert_sql = """
         INSERT INTO population_by_race_and_zip (
@@ -91,27 +81,6 @@ def ingest_us_census_callable(year, census_dataset, zips, database, user, passwo
         FROM json_populate_recordset(NULL::population_by_race_and_zip, %s)
     """
     cursor.execute(insert_sql, vars = (json.dumps(population_by_race_and_zip), ))
-
-    # set up SQL insertions here for each of the 5 tables...
-    # dropping table if ingesting data for earliest month
-    # if begin_date == date_to_drop_table:
-    cursor.execute("""
-        DROP TABLE IF EXISTS population_by_agesex_and_zip
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS population_by_agesex_and_zip (
-            id SERIAL PRIMARY KEY,
-            year INTEGER,
-            dataset VARCHAR(50),
-            zip VARCHAR(20),
-            sex varchar(20),
-            min_age INTEGER,
-            max_age INTEGER,
-            population INTEGER
-        )
-    """
-    cursor.execute(create_table_sql)
 
     insert_sql = """
         INSERT INTO population_by_agesex_and_zip (
@@ -135,26 +104,6 @@ def ingest_us_census_callable(year, census_dataset, zips, database, user, passwo
     """
     cursor.execute(insert_sql, vars = (json.dumps(population_by_agesex_and_zip), ))
 
-    # set up SQL insertions here for each of the 5 tables...
-    # dropping table if ingesting data for earliest month
-    # if begin_date == date_to_drop_table:
-    cursor.execute("""
-        DROP TABLE IF EXISTS population_by_incomelevel_and_zip
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS population_by_incomelevel_and_zip (
-            id SERIAL PRIMARY KEY,
-            year INTEGER,
-            dataset VARCHAR(50),
-            zip VARCHAR(20),
-            min_income INTEGER,
-            max_income INTEGER,
-            population INTEGER
-        )
-    """
-    cursor.execute(create_table_sql)
-
     insert_sql = """
         INSERT INTO population_by_incomelevel_and_zip (
             year,
@@ -175,24 +124,6 @@ def ingest_us_census_callable(year, census_dataset, zips, database, user, passwo
     """
     cursor.execute(insert_sql, vars = (json.dumps(population_by_incomelevel_and_zip), ))
 
-    # set up SQL insertions here for each of the 5 tables...
-    # dropping table if ingesting data for earliest month
-    # if begin_date == date_to_drop_table:
-    cursor.execute("""
-        DROP TABLE IF EXISTS median_income_by_zip
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS median_income_by_zip (
-            id SERIAL PRIMARY KEY,
-            year INTEGER,
-            dataset VARCHAR(50),
-            zip VARCHAR(20),
-            median_income INTEGER
-        )
-    """
-    cursor.execute(create_table_sql)
-
     insert_sql = """
         INSERT INTO median_income_by_zip (
             year,
@@ -208,24 +139,6 @@ def ingest_us_census_callable(year, census_dataset, zips, database, user, passwo
         FROM json_populate_recordset(NULL::median_income_by_zip, %s)
     """
     cursor.execute(insert_sql, vars = (json.dumps(median_income_by_zip), ))
-
-    # set up SQL insertions here for each of the 5 tables...
-    # dropping table if ingesting data for earliest month
-    # if begin_date == date_to_drop_table:
-    cursor.execute("""
-        DROP TABLE IF EXISTS median_age_by_zip
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS median_age_by_zip (
-            id SERIAL PRIMARY KEY,
-            year INTEGER,
-            dataset VARCHAR(50),
-            zip VARCHAR(20),
-            median_age FLOAT
-        )
-    """
-    cursor.execute(create_table_sql)
 
     insert_sql = """
         INSERT INTO median_age_by_zip (

@@ -4,10 +4,12 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=weather
+      - APP_DB_USER=docker
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=real_estate_properties
     volumes:
-      - "./weather_postgres_data:/var/lib/postgresql/data:rw"
-      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./real_estate_properties_postgres_data:/var/lib/postgresql/data:rw"
+      - "./init.sh:/docker-entrypoint-initdb.d/init.sh"
     ports:
       - "5432:5432"
     networks:
