@@ -22,7 +22,7 @@ with open('/opt/airflow/dags/data/Zip_Codes_(LA_County).csv') as csvfile:
     rows = csv.reader(csvfile)
     next(rows)
     res = zip(*rows)
-    zips = list(res)[1][:5] # list of LA County zip codes
+    zips = list(res)[1] # list of LA County zip codes
 
 retry_sleep_time = 60
 api_max_attempts = 2
