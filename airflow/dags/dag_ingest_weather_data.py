@@ -82,7 +82,6 @@ with monthly_batch_workflow:
             'host': PG_HOST,
             'port': PG_PORT,
             'locations': zips,
-            'date_to_drop_table': ingestion_start_date,
             'retry_sleep_time': retry_sleep_time,
             'api_max_attempts': api_max_attempts,
         }
