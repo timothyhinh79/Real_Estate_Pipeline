@@ -2,7 +2,7 @@ import json
 import psycopg2
 from weather_api import *
 
-def ingest_weekly_weather_data(execution_date, database, user, password, host, port, locations, **kwargs):
+def ingest_weekly_weather_data(execution_date, database, user, password, host, port, locations, retry_sleep_time, api_max_attempts, **kwargs):
 
     print('execution_date:', execution_date)
     print('database:', database)
@@ -14,38 +14,11 @@ def ingest_weekly_weather_data(execution_date, database, user, password, host, p
     execution_date_param  = date(execution_date.year, execution_date.month, execution_date.day)
     json_data = []
     for location in locations:
-        json_data = json_data + download_weather_data(location, 'zip_code', execution_date_param, execution_date_param + timedelta(6))
+        json_data = json_data + download_weather_data(location, 'zip_code', execution_date_param, execution_date_param + timedelta(6), retry_sleep_time, api_max_attempts)
 
     conn = psycopg2.connect(database=database,user = user, password = password, host = host, port = port)
     conn.autocommit = True
     cursor = conn.cursor()
-
-    cursor.execute("""
-        DROP TABLE IF EXISTS daily_forecasts
-    """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS daily_forecasts (
-            id SERIAL PRIMARY KEY,
-            zip_code VARCHAR(255),
-            date DATE,
-            maxtemp_c FLOAT,
-            maxtemp_f FLOAT,
-            mintemp_c FLOAT,
-            mintemp_f FLOAT,
-            avgtemp_c FLOAT,
-            avgtemp_f FLOAT,
-            maxwind_mph FLOAT,
-            maxwind_kph FLOAT,
-            totalprecip_mm FLOAT,
-            totalprecip_in FLOAT,
-            avgvis_km FLOAT,
-            avgvis_miles FLOAT,
-            avghumidity FLOAT,
-            uv FLOAT
-        )
-    """
-    cursor.execute(create_table_sql)
 
     insert_sql = """
         INSERT INTO daily_forecasts (
@@ -88,7 +61,7 @@ def ingest_weekly_weather_data(execution_date, database, user, password, host, p
     cursor.execute(insert_sql, vars = (json.dumps(json_data), ))
 
 
-def ingest_monthly_weather_data_batch(execution_date, database, user, password, host, port, locations, date_to_drop_table, **kwargs):
+def ingest_monthly_weather_data_batch(execution_date, database, user, password, host, port, locations, retry_sleep_time, api_max_attempts, **kwargs):
 
     print('execution_date:', execution_date)
     print('database:', database)
@@ -110,40 +83,11 @@ def ingest_monthly_weather_data_batch(execution_date, database, user, password, 
     json_data = []
     for location in locations:
         # download_weather_data_batch(location, location_field_name, start_date, end_date):
-        json_data = json_data + download_weather_data_batch(location, 'zip_code', begin_date, end_date)
+        json_data = json_data + download_weather_data_batch(location, 'zip_code', begin_date, end_date, retry_sleep_time, api_max_attempts)
 
     conn = psycopg2.connect(database=database,user = user, password = password, host = host, port = port)
     conn.autocommit = True
     cursor = conn.cursor()
-
-    # dropping table if ingesting data for earliest month
-    if begin_date == date_to_drop_table:
-        cursor.execute("""
-            DROP TABLE IF EXISTS daily_forecasts
-        """)
-
-    create_table_sql = """
-        CREATE TABLE IF NOT EXISTS daily_forecasts (
-            id SERIAL PRIMARY KEY,
-            zip_code VARCHAR(255),
-            date DATE,
-            maxtemp_c FLOAT,
-            maxtemp_f FLOAT,
-            mintemp_c FLOAT,
-            mintemp_f FLOAT,
-            avgtemp_c FLOAT,
-            avgtemp_f FLOAT,
-            maxwind_mph FLOAT,
-            maxwind_kph FLOAT,
-            totalprecip_mm FLOAT,
-            totalprecip_in FLOAT,
-            avgvis_km FLOAT,
-            avgvis_miles FLOAT,
-            avghumidity FLOAT,
-            uv FLOAT
-        )
-    """
-    cursor.execute(create_table_sql)
 
     insert_sql = """
         INSERT INTO daily_forecasts (

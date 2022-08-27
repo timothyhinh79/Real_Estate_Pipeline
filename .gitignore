@@ -4,11 +4,11 @@ console.py
 airflow/dags/code/constants.py
 airflow/dags/__pycache__
 airflow/dags/code/__pycache__
-airflow/dags/tests/__pycache__
+airflow/dags/code/tests/__pycache__
 airflow/dags/test.py
 airflow/dags/code/*.txt
 airflow/dags/code/*.json
 
 airflow/dags/code/old/
 airflow/logs/
-postgres/weather_postgres_data
+postgres/real_estate_properties_postgres_data

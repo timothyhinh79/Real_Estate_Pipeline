@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import re
+from datetime import date
 import time
 
 zillow_scraper_headers = {
@@ -14,6 +15,7 @@ zillow_scraper_headers = {
 
 column_name_mapping = {
     'zpid': 'zpid',
+    'extract_date': 'extract_date',
     'streetAddress': 'street_address',
     'zipcode': 'zipcode',
     'city': 'city',
@@ -87,6 +89,9 @@ def next_page(extract_json):
     return 'pagination' in extract_json['cat1']['searchList'] and 'nextUrl' in extract_json['cat1']['searchList']['pagination']
 
 def clean_listing(homeInfo_dict, column_mapping):
+    # adding extract date
+    homeInfo_dict['extract_date'] = date.today().strftime('%m-%d-%Y')
+
     # flattening listing_sub_type nested dict
     if 'listing_sub_type' in homeInfo_dict:
         if 'is_openHouse' in homeInfo_dict['listing_sub_type']:
