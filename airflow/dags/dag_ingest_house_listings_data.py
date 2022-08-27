@@ -31,8 +31,8 @@ locations = [{'city': city, 'state': state, 'zip': ''} for city, state, include 
 local_workflow = DAG(
     "HouseListingsIngestionDAG",
     max_active_runs = 1,
-    schedule_interval="@once",
-    start_date=datetime(2022, 8, 14)
+    schedule_interval="0 10 * * 5", # every Friday at 3:00 PM
+    start_date=datetime(2022, 8, 26)
 )
 
 

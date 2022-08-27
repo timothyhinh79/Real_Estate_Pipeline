@@ -48,6 +48,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     CREATE TABLE IF NOT EXISTS crimes (
         id SERIAL PRIMARY KEY,
         extract_date DATE,
+        source_file VARCHAR(255),
         lurn_sak INTEGER,
         incident_date TIMESTAMP,
         incident_reported_date DATE,
