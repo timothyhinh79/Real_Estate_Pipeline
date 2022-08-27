@@ -32,7 +32,7 @@ local_workflow = DAG(
     "HouseListingsIngestionDAG",
     max_active_runs = 1,
     schedule_interval="0 10 * * 5", # every Friday at 3:00 PM
-    start_date=datetime(2022, 8, 26)
+    start_date=datetime(2022, 8, 19)
 )
 
 
