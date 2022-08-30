@@ -1,0 +1,81 @@
+
+version: 2
+
+sources:
+  - name: staging
+    database: real_estate_properties
+    schema: development
+    tables:
+      - name: crimes
+      - name: house_listings
+
+models:
+  - name: stg_crimes_data
+    description: >
+      Crime incidents reported to the Los Angeles County Sheriff's department. Includes Part 1 and Part 2 crimes, 
+      as defined by the Federal Bureau of Investigation (FBI)
+      Part 1 crimes include criminal homicide, forcible rape, robbery, aggravated assault, burglary, larcenty theft,
+      grand theft auto, and arson.
+      Part 2 crimes include forgery, fraud and NSF checks, sex offenses felonies, sex offenses misdemeanors, 
+      non-aggravated assaults, weapon laws, offenses against family, narcotics, liquor laws, drunk/alcohol/drugs,
+      disorderly conduct, vagrancy, gambling, drunk driving vehicle / boat, vandalism, warrants, receiving stolen
+      property, federal offenses w/o money, federal offenses with money, miscellaneous felonies, and miscellaenous
+      misdemeanors.
+    columns:
+      - name: id
+        description: "Internal index # assigned to each record in crimes data table"
+      - name: extract_date
+        description: "Date when data was pulled from LASD website"
+      - name: lurn_sak
+        description: "System assigned number for the case (column added 04/26/2018)"
+      - name: incident_date
+        description: "Date the crime incident occurred"
+      - name: incident_reported_date
+        description: "Date the crime was reported to LASD"
+      - name: category
+        description: "Incident crime category"
+      - name: stat
+        description: "A three digit numerical coding system to identify the primary crime category for an incident"
+      - name: stat_desc
+        description: "The definition of the statistical code number"
+      - name: address
+        description: "The street number, street name, state and zip where the incident occurred"
+      - name: street
+        description: "The street number and street name where the incident occurred"
+      - name: city
+        description: "The city where the incident occurred"
+      - name: zip
+        description: "The zip code of the location where the incident occurred"
+      - name: incident_id
+        description: "The URN #, or Uniform Report Number, is a unique # assigned to every criminal and noncriminal incident"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: reporting_district
+        description: "A geographical area defined by LASD which is within a city or unincorporated area where the incident occurred"
+      - name: seq
+        description: "Each incident for each station is issued a unique sequence # within a given year"
+      - name: gang_related
+        description: "Indicates if the crime incident was gang related (column added 08/02/2012)"
+      - name: unit_id
+        description: "ORI # is a number issued by the FBI for every law enforcement agency"
+      - name: unit_name
+        description: "Station Name"
+      - name: longitude
+        description: "(truncated to 3 decimals, equivalent to half-block rounding) (column added 01/04/2021)"
+      - name: latitude
+        description: "(truncated to 3 decimals, equivalent to half-block rounding) (column added 01/04/2021)"
+      - name: part_category
+        description: "Part I Crime or Part II Crime indicator (replaced DELETED column 01/04/2021)"
+    
+
+  # - name: my_second_dbt_model
+  #   description: "A starter dbt model"
+  #   columns:
+  #     - name: id
+  #       description: "The primary key for this table"
+  #       tests:
+  #         - unique
+  #         - not_null

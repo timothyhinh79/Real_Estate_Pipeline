@@ -18,7 +18,7 @@ services:
     # restart: unless-stopped
     volumes:
       - type: bind
-        source: /C/Users/minim/zoomcamp/final_project/Real_Estate_Pipeline
+        source: /C/Users/minim/zoomcamp/final_project/Real_Estate_Pipeline/dbt
         target: /usr/app
     ports:
       - "8085:8085"

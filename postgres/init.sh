@@ -8,6 +8,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
   \connect $APP_DB_NAME $APP_DB_USER
   BEGIN;
     CREATE SCHEMA IF NOT EXISTS development;
+    CREATE SCHEMA IF NOT EXISTS production;
 
     CREATE TABLE IF NOT EXISTS development.house_listings (
         id SERIAL PRIMARY KEY,
@@ -62,10 +63,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         city VARCHAR(255),
         zip VARCHAR(10),
         incident_id VARCHAR(255),
-        reporting_district INTEGER,
-        seq INTEGER,
         gang_related VARCHAR(255),
-        unit_id VARCHAR(255),
         unit_name VARCHAR(255),
         longitude FLOAT,
         latitude FLOAT,
