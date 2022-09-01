@@ -8,13 +8,170 @@ sources:
     tables:
       - name: crimes
       - name: house_listings
+      - name: daily_forecasts
 
 models:
+  - name: stg_weather_data
+    description: >
+      Data extracted from WeatherAPI on daily weather forecasts for every zip code in Los Angeles County ranging back to January 1st, 2022. 
+      Includes temperatures, wind speeds, precipitation levels, humidity, UV levels, etc.
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code/date record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: zip_code
+        description: "Zip code that the daily forecast record is based on"
+      - name: date
+        description: "Date of daily forecast"
+      - name: maxtemp_c
+        description: "Maximum temperature reached during the day in Celsius"
+      - name: maxtemp_f
+        description: "Maximum temperature reached during the day in Fahrenheit"
+      - name: mintemp_c
+        description: "Minimum temperature reached during the day in Celsius"
+      - name: mintemp_f
+        description: "Minimum temperature reached during the day in Fahrenheit"
+      - name: avgtemp_c
+        description: "Average temperature throughout the whole day in Celsius"
+      - name: avgtemp_f
+        description: "Average temperature throughout the whole day in Fahrenheit"
+      - name: maxwind_mph
+        description: "Maximum wind speed during the day in miles per hour"
+      - name: maxwind_kph
+        description: "Maximum wind speed during the day in kilometers per hour"
+      - name: totalprecip_mm
+        description: "Precipitation level measured in millimeters"
+      - name: totalprecip_in
+        description: "Precipitation level measured in inches"       
+      - name: avgvis_km
+        description: "Average visibility throughout the day measured in kilometers"
+      - name: avgvis_miles
+        description: "Average visibility throughout the day measured in miles"
+      - name: avghumidity
+        description: "Average percentage humidity level throughout the day"
+
+  - name: stg_house_listings_data
+    description: >
+      Property listings scraped from Zillow.com for the cities listed below. Each city's name was entered into the URL 
+      to retrieve the property listings located in that city:
+        - Alhambra
+        - Arcadia
+        - Baldwin Park
+        - Covina
+        - Diamond Bar
+        - Duarte
+        - El Monte
+        - Monrovia
+        - Monterey
+        - Pasadena
+        - Rosemead
+        - San Gabriel
+        - South El Monte
+        - South Pasadena
+        - Temple City
+        - West Covina
+    columns:
+      - name: id
+        description: "Internal index # assigned to each house listing record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: extract_date
+        description: "Date when data was scraped from Zillow website"
+        tests:
+          - not_null:
+              severity: warn
+      - name: zpid
+        description: "Unique ID number assigned by Zillow to identify each proper house listing"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: street_address
+        description: "Street address of house/property"
+      - name: zipcode
+        description: "Zipcode where house/property is located in"
+      - name: city
+        description: "City where house/property is located in"
+      - name: state
+        description: "US state where house/property is located in"
+      - name: latitude
+        description: "Latitude coordinate of location"
+      - name: longitude
+        description: "Longitude coordinate of location"
+      - name: price
+        description: "Price that the listed house/property is selling at"
+      - name: bathrooms
+        description: "Number of bathrooms in the house"
+      - name: bedrooms
+        description: "Number of bedrooms in the house"
+      - name: living_area
+        description: "Living area measured in square footage"
+      - name: home_type
+        description: >
+          Categorical value describing the type of home. Example values include:
+            - CONDO
+            - LOT
+            - MANUFACTURED
+            - MULTI_FAMILY
+            - SINGLE_FAMILY
+            - TOWNHOUSE
+      - name: home_status
+        description: >
+          Sale status of home/property (e.g. FOR_SALE)
+      - name: days_on_zillow
+        description: "Number of days that the house listing has been posted on Zillow.com"
+      - name: is_featured
+        description: "Boolean indicating if the house listing is featured on Zillow.com"
+      - name: should_highlight
+        description: "Unknown"
+      - name: zestimate
+        description: "Zillow's estimate of the true value of the listed house/property"
+      - name: rent_zestimate
+        description: "Zillow's estimate of the monthly rent that could be charged on the property"
+      - name: is_open_house
+        description: "Boolean indicating if the listed property is available for open house"
+      - name: is_fsba
+        description: "Unknown"
+      - name: open_house
+        description: "String indicating the open house times"
+      - name: is_unmappable
+        description: "Boolean indicating if the house/property is unable to be geographically mapped"
+      - name: is_preforeclosure_auction
+        description: "Boolean indicating if the house/property is being sold at a pre-foreclosure auction"
+      - name: home_status_for_hdp
+        description: "Sale status of home/property (e.g. FOR_SALE)"
+      - name: price_for_hdp
+        description: "Price that the listed house/property is selling at"
+      - name: is_non_owner_occupied
+        description: "Boolean indicating if the house/property is being occupied by someone other than the owner"
+      - name: is_premier_builder
+        description: "Unknown"
+      - name: is_zillow_owned
+        description: "Boolean indicating if property is owned by Zillow"
+      - name: currency
+        description: "Currency that the property is being sold in"
+      - name: country
+        description: "Country where property is located"
+      - name: tax_assessed_value
+        description: "The property's taxable value"
+      - name: lot_area_value
+        description: "Number representing the size of lot area (units indicated by lot_area_unit field)"
+      - name: lot_area_unit
+        description: "Unit basis that lot_area_value is expressed in (e.g. sqft, acres, etc.)"
+        
   - name: stg_crimes_data
     description: >
       Crime incidents reported to the Los Angeles County Sheriff's department. Includes Part 1 and Part 2 crimes, 
       as defined by the Federal Bureau of Investigation (FBI)
-      Part 1 crimes include criminal homicide, forcible rape, robbery, aggravated assault, burglary, larcenty theft,
+      Part 1 crimes include criminal homicide, forcible rape, robbery, aggravated assault, burglary, larceny theft,
       grand theft auto, and arson.
       Part 2 crimes include forgery, fraud and NSF checks, sex offenses felonies, sex offenses misdemeanors, 
       non-aggravated assaults, weapon laws, offenses against family, narcotics, liquor laws, drunk/alcohol/drugs,
@@ -24,8 +181,16 @@ models:
     columns:
       - name: id
         description: "Internal index # assigned to each record in crimes data table"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
       - name: extract_date
         description: "Date when data was pulled from LASD website"
+        tests:
+          - not_null:
+              severity: warn
       - name: lurn_sak
         description: "System assigned number for the case (column added 04/26/2018)"
       - name: incident_date
@@ -70,12 +235,3 @@ models:
       - name: part_category
         description: "Part I Crime or Part II Crime indicator (replaced DELETED column 01/04/2021)"
     
-
-  # - name: my_second_dbt_model
-  #   description: "A starter dbt model"
-  #   columns:
-  #     - name: id
-  #       description: "The primary key for this table"
-  #       tests:
-  #         - unique
-  #         - not_null
