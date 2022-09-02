@@ -35,4 +35,6 @@ models:
   real_estate_properties:
     staging:
       schema: staging
+    summaries:
+      schema: summaries
 

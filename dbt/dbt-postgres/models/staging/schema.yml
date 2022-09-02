@@ -27,6 +27,8 @@ models:
         description: "Zip code that the daily forecast record is based on"
       - name: date
         description: "Date of daily forecast"
+      - name: season
+        description: "Winter/Spring/Summer/Fall"
       - name: maxtemp_c
         description: "Maximum temperature reached during the day in Celsius"
       - name: maxtemp_f
