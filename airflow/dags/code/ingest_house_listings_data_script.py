@@ -4,7 +4,7 @@ import time
 from datetime import date, timedelta
 from zillow_scraper import *
 
-def ingest_listings_data(execution_date, database, user, password, host, port, locations, sleep_time_between_pages, **kwargs):
+def ingest_listings_data(execution_date, database, schema, table, user, password, host, port, locations, sleep_time_between_pages, **kwargs):
 
     print('execution_date:', execution_date)
     print('database:', database)
@@ -25,8 +25,8 @@ def ingest_listings_data(execution_date, database, user, password, host, port, l
     conn.autocommit = True
     cursor = conn.cursor()
 
-    insert_sql = """
-        INSERT INTO house_listings (
+    insert_sql = f"""
+        INSERT INTO {schema}.{table} (
             zpid,
             extract_date,
             street_address,
@@ -97,7 +97,7 @@ def ingest_listings_data(execution_date, database, user, password, host, port, l
             tax_assessed_value,
             lot_area_value,
             lot_area_unit
-        FROM json_populate_recordset(NULL::house_listings, %s)
+        FROM json_populate_recordset(NULL::{schema}.{table}, %s)
     """
     cursor.execute(insert_sql, vars = (json.dumps(listings), ))
 

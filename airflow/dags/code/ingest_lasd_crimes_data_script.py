@@ -4,7 +4,7 @@ import time
 import pandas as pd
 from datetime import date, timedelta
 
-def ingest_crimes_data_to_postgres(input, source_file, database, user, password, host, port):
+def ingest_crimes_data_to_postgres(input, source_file, database, schema, table, user, password, host, port):
 
     print('database:', database)
     print('user:', user)
@@ -26,6 +26,6 @@ def ingest_crimes_data_to_postgres(input, source_file, database, user, password,
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{database}')
     engine.connect()
 
-    lasd_crimes.to_sql('crimes', con = engine, if_exists = 'append', index = False)
+    lasd_crimes.to_sql(table, schema = schema, con = engine, if_exists = 'append', index = False)
 
 
