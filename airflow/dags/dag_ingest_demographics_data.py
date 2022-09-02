@@ -44,6 +44,7 @@ with local_workflow:
             'census_dataset': census_dataset,
             'zips': zips,
             'database': PG_DATABASE,
+            'schema': 'development',
             'user': PG_USER,
             'password': PG_PASSWORD,
             'host': PG_HOST,
