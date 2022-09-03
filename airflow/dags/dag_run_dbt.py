@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.utils.dates import datetime
 from airflow.utils.dates import timedelta
+from airflow.contrib.operators.ssh_operator import SSHOperator
 
 with DAG(
     dag_id='dbt_dag',
@@ -13,7 +14,7 @@ with DAG(
 
     dbt_run = BashOperator(
         task_id='dbt_run',
-        bash_command='dbt run'
+        bash_command='cd /opt/airflow/dbt-postgres && dbt run',
     )
 
     # dbt_test = BashOperator(

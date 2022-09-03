@@ -61,12 +61,14 @@ x-airflow-common:
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    DBT_PROFILES_DIR: /opt/airflow/dbt-postgres
   env_file:
     - .env
   volumes:
-    - ./dags:/opt/airflow/dags
-    - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./dbt/dbt-postgres:/opt/airflow/dbt-postgres
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -242,7 +244,7 @@ services:
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
     volumes:
-      - .:/sources
+      - ./airflow:/sources
 
   airflow-cli:
     <<: *airflow-common
@@ -277,6 +279,50 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
+  pgdatabase:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - APP_DB_USER=docker
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=real_estate_properties
+    volumes:
+      - "./postgres/real_estate_properties_postgres_data:/var/lib/postgresql/data:rw"
+      - "./postgres/init.sh:/docker-entrypoint-initdb.d/init.sh"
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "8081:80"
+
+  dbt:
+    image: entechlog/dbt${DBT_VERSION_TAG}
+    container_name: dbt
+    build: ./dbt/docker_build/
+#    env_file:
+#      - ./docker/dbt/.env
+    command: 
+      - bash 
+      - -c 
+      - |
+        echo "Launching dbt"
+        #
+        sleep infinity
+    # restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /C/Users/minim/zoomcamp/final_project/Real_Estate_Pipeline/dbt/dbt-postgres
+        target: /usr/app
+    ports:
+      - "8085:8085"
+    environment:
+      - TZ=Etc/GMT
 
 volumes:
   postgres-db-volume:
