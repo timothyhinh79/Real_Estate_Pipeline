@@ -89,4 +89,8 @@ income_group_codes = {
     '017': {'min_income': 200_000, 'max_income': 1_000_000_000}
 }
 
-
+breakout_type_codes = {
+    'agesex_group': agesex_group_codes,
+    'income_group': income_group_codes,
+    'race': race_codes
+}

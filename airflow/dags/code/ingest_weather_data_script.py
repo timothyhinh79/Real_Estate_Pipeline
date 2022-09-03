@@ -2,7 +2,7 @@ import json
 import psycopg2
 from weather_api import *
 
-def ingest_weekly_weather_data(execution_date, database, user, password, host, port, locations, retry_sleep_time, api_max_attempts, **kwargs):
+def ingest_weekly_weather_data(execution_date, database, schema, table, user, password, host, port, locations, retry_sleep_time, api_max_attempts, **kwargs):
 
     print('execution_date:', execution_date)
     print('database:', database)
@@ -20,8 +20,8 @@ def ingest_weekly_weather_data(execution_date, database, user, password, host, p
     conn.autocommit = True
     cursor = conn.cursor()
 
-    insert_sql = """
-        INSERT INTO daily_forecasts (
+    insert_sql = f"""
+        INSERT INTO {schema}.{table} (
             zip_code,
             date,
             maxtemp_c,
@@ -56,12 +56,12 @@ def ingest_weekly_weather_data(execution_date, database, user, password, host, p
             avgvis_miles,
             avghumidity,
             uv
-        FROM json_populate_recordset(NULL::daily_forecasts, %s)
+        FROM json_populate_recordset(NULL::{schema}.{table}, %s)
     """
     cursor.execute(insert_sql, vars = (json.dumps(json_data), ))
 
 
-def ingest_monthly_weather_data_batch(execution_date, database, user, password, host, port, locations, retry_sleep_time, api_max_attempts, **kwargs):
+def ingest_monthly_weather_data_batch(execution_date, database, schema, table, user, password, host, port, locations, retry_sleep_time, api_max_attempts, **kwargs):
 
     print('execution_date:', execution_date)
     print('database:', database)
@@ -89,8 +89,8 @@ def ingest_monthly_weather_data_batch(execution_date, database, user, password, 
     conn.autocommit = True
     cursor = conn.cursor()
 
-    insert_sql = """
-        INSERT INTO daily_forecasts (
+    insert_sql = f"""
+        INSERT INTO {schema}.{table} (
             zip_code,
             date,
             maxtemp_c,
@@ -125,6 +125,6 @@ def ingest_monthly_weather_data_batch(execution_date, database, user, password, 
             avgvis_miles,
             avghumidity,
             uv
-        FROM json_populate_recordset(NULL::daily_forecasts, %s)
+        FROM json_populate_recordset(NULL::{schema}.{table}, %s)
     """
     cursor.execute(insert_sql, vars = (json.dumps(json_data), ))

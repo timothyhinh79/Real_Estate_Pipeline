@@ -48,6 +48,8 @@ with weekly_workflow:
         # database, user, password, host, port,
         op_kwargs = {
             'database': PG_DATABASE,
+            'schema': 'development',
+            'table': 'daily_forecasts',
             'user': PG_USER,
             'password': PG_PASSWORD,
             'host': PG_HOST,
@@ -77,6 +79,8 @@ with monthly_batch_workflow:
         # database, user, password, host, port,
         op_kwargs = {
             'database': PG_DATABASE,
+            'schema': 'development',
+            'table': 'daily_forecasts',
             'user': PG_USER,
             'password': PG_PASSWORD,
             'host': PG_HOST,

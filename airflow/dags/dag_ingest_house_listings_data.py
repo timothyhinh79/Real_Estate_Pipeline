@@ -44,6 +44,8 @@ with local_workflow:
         provide_context = True,
         op_kwargs = {
             'database': PG_DATABASE,
+            'schema': 'development',
+            'table': 'house_listings',
             'user': PG_USER,
             'password': PG_PASSWORD,
             'host': PG_HOST,

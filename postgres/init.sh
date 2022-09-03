@@ -7,7 +7,10 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
   GRANT ALL PRIVILEGES ON DATABASE $APP_DB_NAME TO $APP_DB_USER;
   \connect $APP_DB_NAME $APP_DB_USER
   BEGIN;
-    CREATE TABLE IF NOT EXISTS house_listings (
+    CREATE SCHEMA IF NOT EXISTS development;
+    CREATE SCHEMA IF NOT EXISTS production;
+
+    CREATE TABLE IF NOT EXISTS development.house_listings (
         id SERIAL PRIMARY KEY,
         extract_date DATE NOT NULL,
         zpid INTEGER,
@@ -45,7 +48,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         lot_area_unit VARCHAR(255)
     );
 
-    CREATE TABLE IF NOT EXISTS crimes (
+    CREATE TABLE IF NOT EXISTS development.crimes (
         id SERIAL PRIMARY KEY,
         extract_date DATE,
         source_file VARCHAR(255),
@@ -60,17 +63,14 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         city VARCHAR(255),
         zip VARCHAR(10),
         incident_id VARCHAR(255),
-        reporting_district INTEGER,
-        seq INTEGER,
         gang_related VARCHAR(255),
-        unit_id VARCHAR(255),
         unit_name VARCHAR(255),
         longitude FLOAT,
         latitude FLOAT,
         part_category INTEGER
     );
 
-    CREATE TABLE IF NOT EXISTS population_by_race_and_zip (
+    CREATE TABLE IF NOT EXISTS development.population_by_race_and_zip (
         id SERIAL PRIMARY KEY,
         year INTEGER,
         dataset VARCHAR(50),
@@ -79,7 +79,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         population INTEGER
     );
 
-    CREATE TABLE IF NOT EXISTS population_by_agesex_and_zip (
+    CREATE TABLE IF NOT EXISTS development.population_by_agesex_and_zip (
         id SERIAL PRIMARY KEY,
         year INTEGER,
         dataset VARCHAR(50),
@@ -90,7 +90,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         population INTEGER
     );
 
-    CREATE TABLE IF NOT EXISTS population_by_incomelevel_and_zip (
+    CREATE TABLE IF NOT EXISTS development.population_by_incomelevel_and_zip (
         id SERIAL PRIMARY KEY,
         year INTEGER,
         dataset VARCHAR(50),
@@ -100,7 +100,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         population INTEGER
     );
 
-    CREATE TABLE IF NOT EXISTS median_income_by_zip (
+    CREATE TABLE IF NOT EXISTS development.median_income_by_zip (
         id SERIAL PRIMARY KEY,
         year INTEGER,
         dataset VARCHAR(50),
@@ -108,7 +108,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         median_income INTEGER
     );
 
-    CREATE TABLE IF NOT EXISTS median_age_by_zip (
+    CREATE TABLE IF NOT EXISTS development.median_age_by_zip (
         id SERIAL PRIMARY KEY,
         year INTEGER,
         dataset VARCHAR(50),
@@ -116,7 +116,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         median_age FLOAT
     );
 
-    CREATE TABLE IF NOT EXISTS daily_forecasts (
+    CREATE TABLE IF NOT EXISTS development.daily_forecasts (
         id SERIAL PRIMARY KEY,
         zip_code VARCHAR(255),
         date DATE,

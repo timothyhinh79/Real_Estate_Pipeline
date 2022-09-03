@@ -42,6 +42,8 @@ with last30days_workflow:
         op_kwargs = {
             'input': last30days_output_file,
             'source_file': 'last_30_days',
+            'schema': 'development',
+            'table': 'crimes',
             'database': PG_DATABASE,
             'user': PG_USER,
             'password': PG_PASSWORD,
@@ -75,6 +77,8 @@ with ytd_workflow:
             'input': ytd_output_file,
             'source_file': 'year_to_date',
             'database': PG_DATABASE,
+            'schema': 'development',
+            'table': 'crimes',
             'user': PG_USER,
             'password': PG_PASSWORD,
             'host': PG_HOST,
