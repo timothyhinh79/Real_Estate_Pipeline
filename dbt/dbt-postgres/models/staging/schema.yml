@@ -9,8 +9,113 @@ sources:
       - name: crimes
       - name: house_listings
       - name: daily_forecasts
+      - name: median_age_by_zip
+      - name: median_income_by_zip
+      - name: population_by_agesex_and_zip
+      - name: population_by_incomelevel_and_zip
+      - name: population_by_race_and_zip
 
 models:
+  - name: stg_population_by_incomelevel_and_zip
+    description: >
+      Population count broken out by income category and zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: income_range
+        description: "Income range"
+      - name: population
+        description: "Population count"
+
+  - name: stg_population_by_agesex_and_zip
+    description: >
+      Population count broken out by agesex category and zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: sex
+        description: "Male or female"
+      - name: age_range
+        description: "Age range"
+      - name: population
+        description: "Population count"
+
+  - name: stg_population_by_race_and_zip
+    description: >
+      Population count broken out by race and zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: race
+        description: >
+          Racial ethnicity of group. Broken out into the following categories:
+          - American Indian and Alaska Native
+          - Asian
+          - Black or African American
+          - Hispanic or Latino
+          - Native Hawaiian and Other Pacific Islander
+          - White
+          - White, Not Hispanic or Latino
+          - Some Other Race
+          - Two or More Races
+      - name: population
+        description: "Population count"
+
+  - name: stg_median_age_income_by_zip
+    description: >
+      Median age broken out by zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: median_age
+        description: "Median age of residents living in zip code"
+      - name: median_income
+        description: "Median income of residents living in zip code"
+
   - name: stg_weather_data
     description: >
       Data extracted from WeatherAPI on daily weather forecasts for every zip code in Los Angeles County ranging back to January 1st, 2022. 
