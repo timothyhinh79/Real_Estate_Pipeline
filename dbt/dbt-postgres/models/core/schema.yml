@@ -1,0 +1,256 @@
+
+version: 2
+
+models:
+  - name: house_listings
+    description: >
+      Property listings scraped from Zillow.com for the cities listed below. Each city's name was entered into the URL 
+      to retrieve the property listings located in that city:
+        - Alhambra
+        - Arcadia
+        - Baldwin Park
+        - Covina
+        - Diamond Bar
+        - Duarte
+        - El Monte
+        - Monrovia
+        - Monterey
+        - Pasadena
+        - Rosemead
+        - San Gabriel
+        - South El Monte
+        - South Pasadena
+        - Temple City
+        - West Covina
+    columns:
+      - name: id
+        description: "Internal index # assigned to each house listing record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: extract_date
+        description: "Date when data was scraped from Zillow website"
+        tests:
+          - not_null:
+              severity: warn
+      - name: zpid
+        description: "Unique ID number assigned by Zillow to identify each proper house listing"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: street_address
+        description: "Street address of house/property"
+      - name: zipcode
+        description: "Zipcode where house/property is located in"
+      - name: city
+        description: "City where house/property is located in"
+      - name: state
+        description: "US state where house/property is located in"
+      - name: latitude
+        description: "Latitude coordinate of location"
+      - name: longitude
+        description: "Longitude coordinate of location"
+      - name: price
+        description: "Price that the listed house/property is selling at"
+      - name: bathrooms
+        description: "Number of bathrooms in the house"
+      - name: bedrooms
+        description: "Number of bedrooms in the house"
+      - name: living_area
+        description: "Living area measured in square footage"
+      - name: home_type
+        description: >
+          Categorical value describing the type of home. Example values include:
+            - CONDO
+            - LOT
+            - MANUFACTURED
+            - MULTI_FAMILY
+            - SINGLE_FAMILY
+            - TOWNHOUSE
+      - name: home_status
+        description: >
+          Sale status of home/property (e.g. FOR_SALE)
+      - name: days_on_zillow
+        description: "Number of days that the house listing has been posted on Zillow.com"
+      - name: is_featured
+        description: "Boolean indicating if the house listing is featured on Zillow.com"
+      - name: should_highlight
+        description: "Unknown"
+      - name: zestimate
+        description: "Zillow's estimate of the true value of the listed house/property"
+      - name: rent_zestimate
+        description: "Zillow's estimate of the monthly rent that could be charged on the property"
+      - name: is_open_house
+        description: "Boolean indicating if the listed property is available for open house"
+      - name: is_fsba
+        description: "Unknown"
+      - name: open_house
+        description: "String indicating the open house times"
+      - name: is_unmappable
+        description: "Boolean indicating if the house/property is unable to be geographically mapped"
+      - name: is_preforeclosure_auction
+        description: "Boolean indicating if the house/property is being sold at a pre-foreclosure auction"
+      - name: home_status_for_hdp
+        description: "Sale status of home/property (e.g. FOR_SALE)"
+      - name: price_for_hdp
+        description: "Price that the listed house/property is selling at"
+      - name: is_non_owner_occupied
+        description: "Boolean indicating if the house/property is being occupied by someone other than the owner"
+      - name: is_premier_builder
+        description: "Unknown"
+      - name: is_zillow_owned
+        description: "Boolean indicating if property is owned by Zillow"
+      - name: currency
+        description: "Currency that the property is being sold in"
+      - name: country
+        description: "Country where property is located"
+      - name: tax_assessed_value
+        description: "The property's taxable value"
+      - name: lot_area_value
+        description: "Number representing the size of lot area (units indicated by lot_area_unit field)"
+      - name: lot_area_unit
+        description: "Unit basis that lot_area_value is expressed in (e.g. sqft, acres, etc.)"
+      - name: open_status
+        description: "Boolean indicating if listing is still up or not on Zillow"
+      - name: closed_date
+        description: "Approximated date when listing was taken off Zillow (calculated as 7 days after the listing's latest extract date if listing is not found in latest data pull)"
+
+  - name: population_by_incomelevel_and_zip
+    description: >
+      Population count broken out by income category and zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: income_range
+        description: "Income range"
+      - name: population
+        description: "Population count"
+
+  - name: population_by_agesex_and_zip
+    description: >
+      Population count broken out by agesex category and zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: sex
+        description: "Male or female"
+      - name: age_range
+        description: "Age range"
+      - name: population
+        description: "Population count"
+
+  - name: population_by_race_and_zip
+    description: >
+      Population count broken out by race and zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: race
+        description: >
+          Racial ethnicity of group. Broken out into the following categories:
+          - American Indian and Alaska Native
+          - Asian
+          - Black or African American
+          - Hispanic or Latino
+          - Native Hawaiian and Other Pacific Islander
+          - White
+          - White, Not Hispanic or Latino
+          - Some Other Race
+          - Two or More Races
+      - name: population
+        description: "Population count"
+
+  - name: median_age_income_by_zip
+    description: >
+      Median age broken out by zip code, extracted from US census API
+    columns:
+      - name: id
+        description: "Internal index # assigned to each zip-code record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: year
+        description: "Year of census dataset"
+      - name: dataset
+        description: "Dataset from US Census (e.g. acs5 = American Community Survey 5-year Data)"
+      - name: zip
+        description: "Zip code"
+      - name: median_age
+        description: "Median age of residents living in zip code"
+      - name: median_income
+        description: "Median income of residents living in zip code"
+
+  - name: crimes_summary
+    description: >
+      Summary crime statistics by city and by category of crime (e.g. aggravated assault, burglary etc.) over the last 30, 180 and 365 days.
+    columns:
+      - name: city
+        description: "Name of city"
+      - name: category
+        description: "Incident crime category"
+      - name: gang_related
+        description: "Indicates if the crime incident was gang related"
+      - name: num_crimes_last30days
+        description: "Number of crime incidents in the last 30 days"
+      - name: num_crimes_last180days
+        description: "Number of crime incidents in the last 180 days"
+      - name: num_crimes_lastyear
+        description: "Number of crime incidents in the last 365 days"
+
+  - name: weather_summary
+    description: >
+      Summary weather statistics by zip code and city over the last 30, 180 and 365 days.
+    columns:
+      - name: zip_code
+        description: "Zip code"
+      - name: city
+        description: "Name of city"
+      - name: season
+        description: "Winter/Spring/Summer/Fall"
+      - name: avg_temperature
+        description: "Average daily temperature in Fahrenheit"
+      - name: avg_humidity
+        description: "Average daily percentage humidity"
+      - name: avg_precip_inches
+        description: "Average daily precipitation level in inches"
+
+        
