@@ -12,14 +12,15 @@ with DAG(
     schedule_interval="0 11 * * 5", # every Friday at 4 PM PST
 ) as dag:
 
+    dbt_deps = BashOperator(
+        task_id='dbt_deps',
+        bash_command='cd /opt/airflow/dbt-postgres && dbt deps',
+    )
+
+
     dbt_run = BashOperator(
         task_id='dbt_run',
         bash_command='cd /opt/airflow/dbt-postgres && dbt run',
     )
 
-    # dbt_test = BashOperator(
-    #     task_id='dbt_test',
-    #     bash_command='dbt test'
-    # )
-
-    dbt_run #>> dbt_test
+    dbt_deps >> dbt_run

@@ -2,7 +2,12 @@
 {{ config(materialized = 'table')}}
 
 SELECT 
-    city
+    {{ dbt_utils.surrogate_key(
+      'city'
+      , 'category'
+      , 'gang_related'
+    ) }} as crime_stats_id
+    , city
     , category
     , gang_related
     , SUM(CASE WHEN time_of_incident > CURRENT_DATE - 30 THEN 1 ELSE 0 END) AS num_crimes_last30days
@@ -12,6 +17,7 @@ SELECT
 FROM {{ ref('stg_crimes_data') }}
 
 GROUP BY 
-    city
+    crime_stats_id
+    , city
     , category
     , gang_related

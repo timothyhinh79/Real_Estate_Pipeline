@@ -12,9 +12,10 @@ def ingest_weekly_weather_data(execution_date, database, schema, table, user, pa
     print('port:', port)
 
     execution_date_param  = date(execution_date.year, execution_date.month, execution_date.day)
+
     json_data = []
     for location in locations:
-        json_data = json_data + download_weather_data(location, 'zip_code', execution_date_param, execution_date_param + timedelta(6), retry_sleep_time, api_max_attempts)
+        json_data = json_data + download_weather_data_batch(location, 'zip_code', execution_date_param, execution_date_param + timedelta(6), retry_sleep_time, api_max_attempts)
 
     conn = psycopg2.connect(database=database,user = user, password = password, host = host, port = port)
     conn.autocommit = True

@@ -25,7 +25,8 @@ last30days_workflow = DAG(
     "CrimesIngestionDAG",
     max_active_runs = 1,
     schedule_interval="0 10 * * 5", # every Friday at 3 PM PST
-    start_date = datetime(2022,8,19)
+    start_date = datetime(2022,8,19),
+    catchup = False
 )
 
 
@@ -59,7 +60,8 @@ ytd_workflow = DAG(
     "CrimesIngestionDAG_YTD",
     max_active_runs = 1,
     schedule_interval="0 10 * * 5#3", # every third Friday of the month at 3 PM PST
-    start_date = datetime(2022,7,14)
+    start_date = datetime(2022,7,14),
+    catchup = False
 )
 
 
