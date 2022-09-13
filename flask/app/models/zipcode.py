@@ -1,0 +1,97 @@
+class Zipcode:
+    __table__ = 'core.zipcode_census_data'
+    id_field = 'zip'
+    query_fields = {'city': str, 'category': str, 'gang_related': str}
+    columns = [
+        'id'
+        , 'year'
+        , 'dataset'
+        , 'zip'
+        , 'median_age'
+        , 'median_income'
+
+        , 'female_0_4_pop'
+        , 'female_5_9_pop'
+        , 'female_10_14_pop'
+        , 'female_15_17_pop'
+        , 'female_18_19_pop'
+        , 'female_20_20_pop'
+        , 'female_21_21_pop'
+        , 'female_22_24_pop'
+        , 'female_25_29_pop'
+        , 'female_30_34_pop'
+        , 'female_35_39_pop'
+        , 'female_40_44_pop'
+        , 'female_45_49_pop'
+        , 'female_50_54_pop'
+        , 'female_55_59_pop'
+        , 'female_60_61_pop'
+        , 'female_62_64_pop'
+        , 'female_65_66_pop'
+        , 'female_67_69_pop'
+        , 'female_70_74_pop'
+        , 'female_75_79_pop'
+        , 'female_80_84_pop'
+        , 'female_85plus_pop'
+        , 'male_0_4_pop'
+        , 'male_5_9_pop'
+        , 'male_10_14_pop'
+        , 'male_15_17_pop'
+        , 'male_18_19_pop'
+        , 'male_20_20_pop'
+        , 'male_21_21_pop'
+        , 'male_22_24_pop'
+        , 'male_25_29_pop'
+        , 'male_30_34_pop'
+        , 'male_35_39_pop'
+        , 'male_40_44_pop'
+        , 'male_45_49_pop'
+        , 'male_50_54_pop'
+        , 'male_55_59_pop'
+        , 'male_60_61_pop'
+        , 'male_62_64_pop'
+        , 'male_65_66_pop'
+        , 'male_67_69_pop'
+        , 'male_70_74_pop'
+        , 'male_75_79_pop'
+        , 'male_80_84_pop'
+        , 'male_85plus_pop'
+
+        , 'income_0_9999_pop'
+        , 'income_10000_14999_pop'
+        , 'income_15000_19999_pop'
+        , 'income_20000_24999_pop'
+        , 'income_25000_29999_pop'
+        , 'income_30000_34999_pop'
+        , 'income_35000_39999_pop'
+        , 'income_40000_44999_pop'
+        , 'income_45000_49999_pop'
+        , 'income_50000_59999_pop'
+        , 'income_60000_74999_pop'
+        , 'income_75000_99999_pop'
+        , 'income_100000_124999_pop'
+        , 'income_125000_149999_pop'
+        , 'income_150000_199999_pop'
+        , 'income_200000plus_pop'
+
+        , 'race_american_native_pop'
+        , 'race_asian_pop'
+        , 'race_black_pop'
+        , 'race_hispanic_latino_pop'
+        , 'race_native_hawaiian_pop'
+        , 'race_other_pop'
+        , 'race_two_or_more_pop'
+        , 'race_white_pop'
+        , 'race_white_not_hispanic_pop'
+
+    ]
+
+    def __init__(self, **kwargs):
+        for key in kwargs.keys():
+            if key not in self.columns:
+                raise ValueError(f'{key} not in {self.columns}')
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def to_json(self):
+        return self.__dict__

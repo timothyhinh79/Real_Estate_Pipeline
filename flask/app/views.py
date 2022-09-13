@@ -1,6 +1,6 @@
 from app import app
 from app.lib import db
-from app.models import House_listing, Crime_stats
+from app.models import House_listing, Crime_stats, Zipcode
 from flask import jsonify, abort, request
 from settings import *
 
@@ -12,6 +12,8 @@ app.config['PG_HOST'] = POSTGRES_HOST
 @app.route('/')
 def home():
     return 'Welcome!'
+
+### House listings views
 
 @app.route('/house_listings')
 def house_listings_index():
@@ -31,6 +33,8 @@ def house_listings_query():
     house_listings = db.query(House_listing, request.args, conn)
     return jsonify([house_listing.to_json() for house_listing in house_listings])
 
+### Crime statistics views
+
 @app.route('/crime_stats')
 def crime_stats_index():
     conn = db.get_db()
@@ -49,6 +53,18 @@ def crime_stats_query():
     crime_stats = db.query(Crime_stats, request.args, conn)
     return jsonify([crime_stat.to_json() for crime_stat in crime_stats])
 
+### Zipcode demographics views
 
+@app.route('/zipcodes')
+def zipcodes_index():
+    conn = db.get_db()
+    zipcodes = db.find_all(Zipcode, conn)
+    return jsonify([zipcode.to_json() for zipcode in zipcodes])
+
+@app.route('/zipcodes/<zip>')
+def show_zipcode(zip):
+    conn = db.get_db()
+    zipcode = db.find_by_id(Zipcode, zip, conn)
+    return jsonify(zipcode.to_json())
     
 

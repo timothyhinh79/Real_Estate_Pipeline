@@ -2,6 +2,22 @@
 version: 2
 
 models:
+  - name: zipcode_census_data
+    description: "Combined US census demographics data by zipcode"
+    columns:
+      - name: id
+        description: "Internal index # assigned to each house listing record"
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: zip
+        description: "Zip code"
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
   - name: house_listings
     description: >
       Property listings scraped from Zillow.com for the cities listed below. Each city's name was entered into the URL 
