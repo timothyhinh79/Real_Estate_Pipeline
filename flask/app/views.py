@@ -59,12 +59,12 @@ def crime_stats_query():
 def zipcodes_index():
     conn = db.get_db()
     zipcodes = db.find_all(Zipcode, conn)
-    return jsonify([zipcode.to_json() for zipcode in zipcodes])
+    return jsonify([zipcode.to_json(conn) for zipcode in zipcodes])
 
 @app.route('/zipcodes/<zip>')
 def show_zipcode(zip):
     conn = db.get_db()
     zipcode = db.find_by_id(Zipcode, zip, conn)
-    return jsonify(zipcode.to_json())
+    return jsonify(zipcode.to_json(conn))
     
 
