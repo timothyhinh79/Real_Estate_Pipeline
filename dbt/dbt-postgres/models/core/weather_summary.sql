@@ -12,7 +12,12 @@ unique_zipcode_cities AS (
 )
 
 SELECT 
-    weather.zip_code
+    {{ dbt_utils.surrogate_key(
+      'weather.zip_code'
+      , 'zc.city'
+      , 'weather.season'
+    ) }} as zipcode_city_season_id
+    , weather.zip_code
     , zc.city
     , weather.season
     , AVG(weather.avgtemp_f) AS avg_temperature

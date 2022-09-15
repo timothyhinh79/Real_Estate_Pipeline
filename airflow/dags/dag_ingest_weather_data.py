@@ -35,7 +35,8 @@ weekly_workflow = DAG(
     "WeatherIngestionDAG_Weekly",
     schedule_interval="0 10 * * 5", # every Friday at 3 PM PST
     max_active_runs = 1,
-    start_date=datetime(2022, 8, 19)
+    start_date=datetime(2022, 8, 19),
+    catchup = False
 )
 
 
